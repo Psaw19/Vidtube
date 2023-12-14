@@ -5,6 +5,7 @@ import { app } from "./app.js";
 dotenv.config({
   path: "./env",
 });
+
 dbConnect()
   .then(() => {
     app.on("error", (error) => {
@@ -12,8 +13,10 @@ dbConnect()
       throw error;
     });
 
-    app.listen(process.env.PORT || 4000, () => {
-      console.log(`Server is live on port: ${process.env.PORT}`);
+    const PORT = process.env.PORT || 4000;
+
+    app.listen(PORT, () => {
+      console.log(`Server is live on port: ${PORT}`);
     });
   })
   .catch((err) => {

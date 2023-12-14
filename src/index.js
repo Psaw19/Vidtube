@@ -1,7 +1,21 @@
 import dotenv from "dotenv";
 import dbConnect from "./db/index.js";
+import { app } from "./app.js";
 
 dotenv.config({
   path: "./env",
 });
-dbConnect();
+dbConnect()
+  .then(() => {
+    app.on("error", (error) => {
+      console.error("ERROR WHILE LISTENING TO SERVER ==> ", error);
+      throw error;
+    });
+
+    app.listen(process.env.PORT || 4000, () => {
+      console.log(`Server is live on port: ${process.env.PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log("Db connection failed ", err);
+  });
